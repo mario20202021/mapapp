@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+    <meta charset="UTF-8">
+    <title>自動讀取文字檔</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; }
+        #file-content { 
+            white-space: pre-wrap; /* 保持原本檔案的換行與空白格式 */
+            background-color: #f4f4f4; 
+            padding: 15px; 
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>檔案內容 (data.txt)</h2>
+    <div id="file-content">載入中...</div>
+
+    <script>
+        // 設定要讀取的檔案路徑（如果 txt 在子資料夾，可寫如 'txt/data.txt'）
+        const filePath = 'tmp.txt';
+
+        // 使用 fetch 發送請求
+        fetch(filePath)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('無法找到或讀取檔案');
+                }
+                return response.text(); // 將回應轉為純文字格式
+            })
+            .then(data => {
+                // 將文字顯示在畫面上
+                document.getElementById('file-content').textContent = data;
+                
+                // 同時也在開發者工具 (Console) 印出
+                console.log(data);
+            })
+            .catch(error => {
+                console.error('讀取失敗:', error);
+                document.getElementById('file-content').textContent = '讀取失敗：' + error.message;
+            });
+    </script>
+
+</body>
+</html>
